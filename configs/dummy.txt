@@ -1,0 +1,1 @@
+Place model configurations in the training/test folders
