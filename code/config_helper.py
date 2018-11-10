@@ -10,6 +10,7 @@ from sklearn.ensemble import GradientBoostingClassifier as GB
 
 class ConfigHelper():
 	k_folds = 10
+	use_predefined_cols = False
 
 	@staticmethod
 	def k_fold_cv(labels):
