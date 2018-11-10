@@ -11,5 +11,5 @@ if __name__ == "__main__":
 	for col in train_data.columns:
 		series= train_data[col]
 		stats = StatisticsHelper.getFeatureStats(series)
-		figure = StatisticsHelper.drawFeatureDistribution(series, col)
+		StatisticsHelper.drawFeatureDistribution(series, col)
 		IOHelper.store_analysis(stats, col)
