@@ -15,10 +15,10 @@ The goal of this project is to explore the [Porto Seguro's Safe Driver Predictio
 ### Requirements
 
 * [Python](https://www.python.org/) >= 2.7.15
-* [NumPy](http://www.numpy.org/) >= 1.15.1
+* [NumPy](http://www.numpy.org/) >= 1.15.2
 * [matplotlib](https://matplotlib.org/) >= 2.2.3
 * [pandas](https://pandas.pydata.org/) >= 0.23.4
-* [scikit-learn](http://scikit-learn.org/stable/) >= 0.19.2
+* [scikit-learn](http://scikit-learn.org/stable/) >= 0.20.0
 
 
 ### Installing
