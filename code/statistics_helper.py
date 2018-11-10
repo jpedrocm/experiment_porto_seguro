@@ -19,4 +19,5 @@ class StatisticsHelper():
 	@staticmethod
 	def drawFeatureDistribution(series, col):
 		min_bins = min(20, series.nunique())
-		return series.plot.hist(bins=min_bins, title=col, grid=True)
+		return series.plot.hist(bins=min_bins, title=col, grid=True,
+								ylim=(0, 600000))

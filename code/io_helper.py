@@ -1,7 +1,7 @@
 ###############################################################################
 
 from pandas import read_csv
-from matplotlib.pyplot import savefig
+import matplotlib.pyplot as plt
 
 
 
@@ -30,7 +30,8 @@ class IOHelper():
 		IOHelper._write_to_csv(dataframe, csv_file)
 
 		png_file = IOHelper.analysis_path+filename+".png"
-		savefig(png_file)
+		plt.savefig(png_file)
+		plt.close()
 
 	@staticmethod
 	def store_submission(dataframe, filename):
