@@ -8,7 +8,7 @@ This is the second project for the Machine Learning class.
 
 ## Description
 
-The goal of this project is to explore the [Porto Seguro's Safe Driver Prediction Challenge](https://www.kaggle.com/c/porto-seguro-safe-driver-prediction/) released on Kaggle in November of 2017. We aim to simply experiment main monolythic models, find their best hyperparameter configurations and features combination through k-fold cross-validation to get a good final solution.
+The goal of this project is to explore the [Porto Seguro's Safe Driver Prediction Challenge](https://www.kaggle.com/c/porto-seguro-safe-driver-prediction/) released on Kaggle in November of 2017. We aim to experiment main models, find their best hyperparameter configurations and features combination through k-fold cross-validation to get a good final solution.
 
 ## Getting Started
 
@@ -16,6 +16,7 @@ The goal of this project is to explore the [Porto Seguro's Safe Driver Predictio
 
 * [Python](https://www.python.org/) >= 2.7.15
 * [NumPy](http://www.numpy.org/) >= 1.15.1
+* [matplotlib](https://matplotlib.org/) >= 2.2.3
 * [pandas](https://pandas.pydata.org/) >= 0.23.4
 * [scikit-learn](http://scikit-learn.org/stable/) >= 0.19.2
 
@@ -24,20 +25,18 @@ The goal of this project is to explore the [Porto Seguro's Safe Driver Predictio
 
 * Clone this repository into your machine
 * Download and install all the requirements listed above in the given order
-* Download the training and test datasets from the [Porto Seguro's data page](https://www.kaggle.com/c/porto-seguro-safe-driver-prediction/data)
+* Download the training and test datasets from the [challenge's data page](https://www.kaggle.com/c/porto-seguro-safe-driver-prediction/data)
 * Place the CSV's in the data/ folder
 
 ### Reproducing
 
-* Enter into the code/ folder in your local repository
-* Run the experiment to produce every ensemble's predictions
 * Edit the training configuration file in the configs/training/ folder
 * Generate training results
 ```
 python generate_training_results.py
 ```
 * Edit the training configuration file in the configs/test/ folder
-* Generate test submission files
+* Generate a test submission file
 ```
 python generate_test_submission.py [-s SUBMISSION_FILENAME]
 ```
@@ -45,7 +44,8 @@ python generate_test_submission.py [-s SUBMISSION_FILENAME]
 
 ## Project Structure
 
-    .            
+    .
+    ├── analysis                           # Feature analysis files   
     ├── code                               # Code files
     |   ├── generate_training_results.py
     |   └── generate_test_submission.py
