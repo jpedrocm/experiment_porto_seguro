@@ -11,7 +11,13 @@ class DataHelper():
 	high_corr_cols = []
 	high_nan_rate_cols = []
 	categorical_cols = []
+	continuous_cols = []
+	mean_cols = []
+	mode_cols = []
+	median_cols = []
 	best_cols = []
+
+	fill_vals = {}
 
 	label_col = "target"
 	min_full_rate_row = 0.8
@@ -36,6 +42,30 @@ class DataHelper():
 	def _select_high_correlation_cols(df):
 		#TODO
 		pass
+
+	@staticmethod
+	def _fill_with_mean(df, is_train):
+		for col in DataHelper.mean_cols:
+			if is_train==True:
+				value = df[col].mean()
+				DataHelper.fill_vals[col] = value
+			df[col].fillna(value=value, inplace=True)
+
+	@staticmethod
+	def _fill_with_mode(df, is_train):
+		for col in DataHelper.mode_cols:
+			if is_train==True:
+				value = df[col].mode()
+				DataHelper.fill_vals[col] = value
+			df[col].fillna(value=value, inplace=True)
+
+	@staticmethod
+	def _fill_with_median(df, is_train):
+		for col in DataHelper.median_cols:
+			if is_train==True:
+				value = df[col].median(skipna=True)
+				DataHelper.fill_vals[col] = value
+			df[col].fillna(value=value, inplace=True)
 
 	@staticmethod
 	def extract_feature_labels(dataframe):
@@ -69,6 +99,15 @@ class DataHelper():
 		pass
 
 	@staticmethod
+	def add_nan_indication_cols(dataframe, inplace):
+		cols = dataframe.columns
+
+		for col in cols:
+			if dataframe[col].count() < len(dataframe[col]):
+				dataframe["nan_"+col] = dataframe[col].notna()
+				dataframe["nan_"+col]=dataframe["nan_"+col].astype(int)
+
+	@staticmethod
 	def select_rows(dataframe, idxs, copy):
 		sel = dataframe.iloc[idxs]
 		return deepcopy(sel) if copy == True else sel
@@ -80,7 +119,10 @@ class DataHelper():
 		return dataframe.dropna(thresh=min_nb_full_cols, inplace=inplace)
 
 	@staticmethod
-	def fill_missing_data(dataframe, inplace, is_train):
+	def fill_missing_data(dataframe, is_train):
+		#DataHelper._fill_with_mean(dataframe, is_train)
+		#DataHelper._fill_with_mode(dataframe, is_train)
+		#DataHelper._fill_with_median(dataframe, is_train)
 		pass
 
 	@staticmethod
@@ -88,9 +130,16 @@ class DataHelper():
 		pass
 
 	@staticmethod
-	def normalize_data(dataframe, inplace, is_train):
+	def normalize_continuous_cols(dataframe, inplace, is_train):
 		pass
 
 	@staticmethod
 	def select_best_features(dataframe, inplace, is_train):
-		pass
+		if is_train==True:
+			#select best cols
+			#assigned best cols to static variable
+			pass
+		else:
+			pass
+			#return dataframe.drop(columns=DataHelper.best_cols,
+			#					  inplace=inplace)

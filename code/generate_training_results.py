@@ -15,9 +15,10 @@ if __name__ == "__main__":
 	print "Making data adjustments"
 	predef = ConfigHelper.use_predefined_cols
 
-	DataHelper.remove_small_variance_cols(feats, predef, inplace=True)
+	DataHelper.add_nan_indication_cols(feats, inplace=True)
 	DataHelper.remove_high_correlation_cols(feats, predef, inplace=True)
 	DataHelper.remove_high_nan_rate_cols(feats, predef, inplace=True)
+	DataHelper.remove_small_variance_cols(feats, predef, inplace=True)
 
 	for train_idxs, val_idxs in ConfigHelper.k_fold_cv(labels):
 		train_X = DataHelper.select_rows(feats, train_idxs, copy=True)
@@ -27,20 +28,22 @@ if __name__ == "__main__":
 
 		print "Applying feature selection"
 		DataHelper.remove_high_nan_rate_rows(train_X, inplace=True)
-		DataHelper.fill_missing_data(train_X, inplace=True, is_train=True)
+		DataHelper.fill_missing_data(train_X, is_train=True)
 		DataHelper.split_categorical_cols(train_X, inplace=True, is_train=True)
-		DataHelper.normalize_data(train_X, inplace=True, is_train=True)
+		DataHelper.normalize_continuous_cols(train_X, inplace=True, is_train=True)
 		DataHelper.select_best_features(train_X, inplace=True, is_train=True)
 
-		DataHelper.fill_missing_data(val_X, inplace=True, is_train=False)
+		DataHelper.fill_missing_data(val_X, is_train=False)
 		DataHelper.split_categorical_cols(val_X, inplace=True, is_train=False)
-		DataHelper.normalize_data(train_X, inplace=True, is_train=False)
+		DataHelper.normalize_continuous_cols(train_X, inplace=True, is_train=False)
 		DataHelper.select_best_features(val_X, inplace=True, is_train=False)
 
-		for model in ConfigHelper.get_models():
+		for name, model in ConfigHelper.get_models():
 
 			print "Training model"
 			model.fit(train_X, train_y)
 
 			print "Assessing model"
 			predicted = model.predict(val_X)
+
+			print "Saving result"

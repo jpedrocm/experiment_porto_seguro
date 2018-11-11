@@ -9,6 +9,7 @@ class IOHelper():
 	datasets_path = "data/"
 	submissions_path = "submissions/"
 	analysis_path = "analysis/"
+	results_path = "results/"
 
 	@staticmethod
 	def _write_to_csv(dataframe, file):
@@ -37,3 +38,7 @@ class IOHelper():
 	def store_submission(dataframe, filename):
 		file = IOHelper.submissions_path+filename+".csv"
 		IOHelper._write_to_csv(dataframe, file)
+
+	@staticmethod
+	def store_result(dataframe, filename):
+		pass
