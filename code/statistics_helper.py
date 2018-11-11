@@ -7,7 +7,7 @@ from pandas import DataFrame
 class StatisticsHelper():
 
 	@staticmethod
-	def get_feature_stats(series):
+	def getFeatureStats(series):
 		stats = series.describe()
 		stats["nan_count"] = len(series)-series.count()
 		stats["nb_unique_values"] = series.nunique()
@@ -17,7 +17,7 @@ class StatisticsHelper():
 		return DataFrame(stats)
 
 	@staticmethod
-	def draw_feature_distribution(series, col):
+	def drawFeatureDistribution(series, col):
 		min_bins = min(20, series.nunique())
 		return series.plot.hist(bins=min_bins, title=col, grid=True,
 								ylim=(0, 600000))

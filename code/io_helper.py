@@ -18,8 +18,7 @@ class IOHelper():
 
 	@staticmethod
 	def read_dataset(filename):
-		print "Reading dataset"
-		
+
 		file = IOHelper.datasets_path+filename+".csv"
 		dataframe = read_csv(filepath_or_buffer=file, encoding="ascii",
 			                 na_values=-1, skip_blank_lines=False,
@@ -37,14 +36,9 @@ class IOHelper():
 
 	@staticmethod
 	def store_submission(dataframe, filename):
-		print "Storing submission"
-
 		file = IOHelper.submissions_path+filename+".csv"
 		IOHelper._write_to_csv(dataframe, file)
 
 	@staticmethod
-	def store_results(dataframe, filename):
-		print "Storing results"
-
-		file = IOHelper.results_path+filename+".csv"
-		IOHelper._write_to_csv(dataframe, file)
+	def store_result(dataframe, filename):
+		pass
