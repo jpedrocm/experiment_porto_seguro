@@ -30,15 +30,19 @@ The goal of this project is to explore the [Porto Seguro's Safe Driver Predictio
 
 ### Reproducing
 
-* Edit the training configuration file in the configs/training/ folder
+* Generate analysis of training dataset columns
+```
+python generate_analysis.py
+```
+* Edit the ConfigHelper attributes and get_training_models function according to the current sample
 * Generate training results
 ```
 python generate_training_results.py
 ```
-* Edit the training configuration file in the configs/test/ folder
-* Generate a test submission file
+* Edit the get_submission_models in the ConfigHelper class according to the current sample
+* Generate all models submission files
 ```
-python generate_test_submission.py [-s SUBMISSION_FILENAME]
+python generate_test_submission.py
 ```
 
 
@@ -47,11 +51,14 @@ python generate_test_submission.py [-s SUBMISSION_FILENAME]
     .
     ├── analysis                           # Feature analysis files   
     ├── code                               # Code files
+    |   ├── generate_analysis.py
+    |   ├── generate_test_submission.py
     |   ├── generate_training_results.py
-    |   └── generate_test_submission.py
-    ├── configs                            # Models' configurations
-    |   ├── training
-    |   └── test
+    |   ├── config_helper.py
+    |   ├── data_helper.py
+    |   ├── io_helper.py
+    |   ├── metrics_helper.py
+    |   ├── statistics_helper.py
     ├── data                               # Dataset files
     ├── results                            # Training results
     ├── submissions                        # Test submission files
