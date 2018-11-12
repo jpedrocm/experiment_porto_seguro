@@ -36,7 +36,7 @@ class ConfigHelper():
 				#("MLP_RELU", MLP(hidden_layer_sizes=(100, ), alpha=0.0001,
 				#	activation="relu", learning_rate_init=0.001,
 				#	tol=0.0001, max_iter=200)),
-				#("MPL_TANH", MLP(hidden_layer_sizes=(100, ), alpha=0.0001,
+				#("MLP_TANH", MLP(hidden_layer_sizes=(100, ), alpha=0.0001,
 				#	activation="tanh", learning_rate_init=0.001,
 				#	tol=0.0001, max_iter=200)),
 				#("MLP_LOG", MLP(hidden_layer_sizes=(100, ), alpha=0.0001,
