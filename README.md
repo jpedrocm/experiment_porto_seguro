@@ -30,11 +30,12 @@ The goal of this project is to explore the [Porto Seguro's Safe Driver Predictio
 
 ### Reproducing
 
-* Generate analysis of training dataset columns
+* Edit the ConfigHelper attribute analysis_dataset with "train" or "test"
+* Generate analysis of the chosen dataset
 ```
 python generate_analysis.py
 ```
-* Edit the ConfigHelper attributes and get_training_models function according to the current sample
+* Edit the ConfigHelper remaining attributes and get_training_models function according to the current sample
 * Generate training results
 ```
 python generate_training_results.py
