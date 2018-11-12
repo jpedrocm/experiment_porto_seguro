@@ -3,6 +3,7 @@
 from copy import deepcopy
 
 from pandas import get_dummies
+from sklearn.preprocessing import MinMaxScaler
 
 
 
@@ -10,10 +11,13 @@ class DataHelper():
 	small_var_cols = []
 	high_corr_cols = []
 	high_nan_rate_cols = []
-	categorical_cols = []
-	continuous_cols = []
+	categorical_cols = ["ps_reg_02", "ps_reg_01", "ps_ind_15", "ps_ind_14",
+						"ps_ind_05_cat", "ps_ind_03", "ps_ind_02_cat", 
+						"ps_ind_01"]
+	continuous_cols = ["ps_reg_03"]
 	mean_cols = []
-	mode_cols = []
+	mode_cols = ["ps_ind_05_cat", "ps_ind_04_cat", "ps_ind_02_cat", 
+				 "ps_reg_03"]
 	median_cols = []
 	best_cols = []
 
@@ -24,48 +28,49 @@ class DataHelper():
 	max_nan_rate_col = 0.9
 	small_var_rate = 0.05
 
+	continuous_scaler = MinMaxScaler()
+
 	@staticmethod
 	def _remove_cols(df, inplace, cols):
+		print cols
 		return df.drop(columns=cols, inplace=inplace)
 
 	@staticmethod
 	def _select_small_variance_cols(df):
 		new_df = df.loc[:, df.std() < DataHelper.small_var_rate*df.mean()]
-		return new_df.columns
+		return new_df.columns.tolist()
 
 	@staticmethod
 	def _select_high_nan_rate_cols(df):
 		new_df = df.loc[:, df.count() < len(df)*DataHelper.max_nan_rate_col]
-		return new_df.columns
-
-	@staticmethod
-	def _select_high_correlation_cols(df):
-		#TODO
-		pass
+		return new_df.columns.tolist()
 
 	@staticmethod
 	def _fill_with_mean(df, is_train):
 		for col in DataHelper.mean_cols:
-			if is_train==True:
-				value = df[col].mean()
-				DataHelper.fill_vals[col] = value
-			df[col].fillna(value=value, inplace=True)
+			if col in df.columns:
+				if is_train==True:
+					value = df[col].mean()
+					DataHelper.fill_vals[col] = value
+				df[col].fillna(value=DataHelper.fill_vals[col], inplace=True)
 
 	@staticmethod
 	def _fill_with_mode(df, is_train):
 		for col in DataHelper.mode_cols:
-			if is_train==True:
-				value = df[col].mode()
-				DataHelper.fill_vals[col] = value
-			df[col].fillna(value=value, inplace=True)
+			if col in df.columns:
+				if is_train==True:
+					value = df[col].mode().iloc[0]
+					DataHelper.fill_vals[col] = value
+				df[col].fillna(value=DataHelper.fill_vals[col], inplace=True)
 
 	@staticmethod
 	def _fill_with_median(df, is_train):
 		for col in DataHelper.median_cols:
-			if is_train==True:
-				value = df[col].median(skipna=True)
-				DataHelper.fill_vals[col] = value
-			df[col].fillna(value=value, inplace=True)
+			if col in df.columns:
+				if is_train==True:
+					value = df[col].median(skipna=True)
+					DataHelper.fill_vals[col] = value
+				df[col].fillna(value=DataHelper.fill_vals[col], inplace=True)
 
 	@staticmethod
 	def extract_feature_labels(dataframe):
@@ -95,17 +100,6 @@ class DataHelper():
 		if predef_cols==False:
 			DataHelper.high_nan_rate_cols = DataHelper._select_high_nan_rate_cols(dataframe)
 		DataHelper._remove_cols(dataframe, True, DataHelper.high_nan_rate_cols)
-
-		print "Columns: " + str(len(dataframe.columns))
-
-	@staticmethod
-	def remove_high_correlation_cols(dataframe, predef_cols):
-		print "Removing highly correlated columns"
-
-		#if predef_cols==False:
-		#	DataHelper.high_corr_cols = DataHelper._select_high_correlation_cols(dataframe)
-
-		#DataHelper._remove_cols(dataframe, True, DataHelper.high_corr_cols)
 
 		print "Columns: " + str(len(dataframe.columns))
 
@@ -146,20 +140,41 @@ class DataHelper():
 	@staticmethod
 	def fill_missing_data(dataframe, is_train):
 		print "Filling missing data with mean, mode and median"
-		dataframe.fillna(0, inplace=True)
 
 		#DataHelper._fill_with_mean(dataframe, is_train)
-		#DataHelper._fill_with_mode(dataframe, is_train)
+		DataHelper._fill_with_mode(dataframe, is_train)
 		#DataHelper._fill_with_median(dataframe, is_train)
+		dataframe.fillna(0, inplace=True)
 
 	@staticmethod
-	def split_categorical_cols(dataframe, inplace, is_train):
+	def split_categorical_cols(dataframe, is_train):
 		print "Splitting categorical columns to binary"
-		print "Columns: " + str(len(dataframe.columns))
+
+		new_df = get_dummies(dataframe, columns=DataHelper.categorical_cols,
+					   		dummy_na=False, drop_first=True)
+
+		print "Columns: " + str(len(new_df.columns))
+
+		return new_df
 
 	@staticmethod
-	def scale_continuous_cols(dataframe, inplace, is_train):
+	def reset_scaler():
+		DataHelper.continuous_scaler = MinMaxScaler()
+
+	@staticmethod
+	def scale_continuous_cols(dataframe, is_train):
 		print "Scaling continuous columns"
+
+		copy_cols = [c for c in DataHelper.continuous_cols if c in dataframe.columns]
+		DataHelper.continuous_cols = copy_cols
+
+		if len(DataHelper.continuous_cols) > 0:
+			if is_train==True:
+				dataframe[DataHelper.continuous_cols] = DataHelper.continuous_scaler.fit_transform(
+						dataframe[DataHelper.continuous_cols].values)
+			else:
+				dataframe[DataHelper.continuous_cols] = DataHelper.continuous_scaler.transform(
+						dataframe[DataHelper.continuous_cols].values)
 
 	@staticmethod
 	def select_best_features(dataframe, inplace, is_train):
