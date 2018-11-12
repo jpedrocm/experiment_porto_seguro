@@ -5,6 +5,8 @@ from numpy import random as rnp
 rnd.seed(2789)
 rnp.seed(3056)
 
+import time
+
 from io_helper import IOHelper
 from data_helper import DataHelper
 from  config_helper import ConfigHelper
@@ -20,8 +22,8 @@ if __name__ == "__main__":
 	predef = ConfigHelper.use_predefined_cols
 
 	DataHelper.add_nan_indication_cols(feats)
-	DataHelper.remove_high_correlation_cols(feats, predef)
 	DataHelper.remove_high_nan_rate_cols(feats, predef)
+	DataHelper.remove_high_correlation_cols(feats, predef)
 	DataHelper.remove_small_variance_cols(feats, predef)
 
 	for e in xrange(ConfigHelper.nb_executions):
@@ -30,6 +32,7 @@ if __name__ == "__main__":
 		MetricsHelper.reset_metrics()
 
 		for f, (train_idxs, val_idxs) in enumerate(ConfigHelper.k_fold_cv(labels)):
+			start_time = time.time()
 			print "Fold: " + str(f)
 
 			train_X = DataHelper.select_rows(feats, train_idxs, copy=True)
@@ -60,7 +63,8 @@ if __name__ == "__main__":
 				print "Predicting"
 				probs = model.predict_proba(val_X)
 				MetricsHelper.store_probs(probs, name)
+			print("--- %s seconds ---" % (time.time() - start_time))
 
 		MetricsHelper.calculate_metrics()
 	MetricsHelper.summarize_metrics()
-	IOHelper.store_results(MetricsHelper.metrics, "metrics")
+	IOHelper.store_results(MetricsHelper.metrics, ConfigHelper.metrics_file)

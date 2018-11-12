@@ -72,3 +72,12 @@ class MetricsHelper():
 		MetricsHelper.metrics = grouped.agg([np.mean, np.std, np.amin,
 											 np.amax])
 		print MetricsHelper.metrics
+
+	@staticmethod
+	def get_submission(idxs, prob):
+		pos_prob = [row[1] for row in prob]
+
+		submission = DataFrame(columns=["target"], index=idxs)
+		submission["target"] = pos_prob
+
+		return submission

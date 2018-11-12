@@ -12,9 +12,9 @@ class IOHelper():
 	results_path = "results/"
 
 	@staticmethod
-	def _write_to_csv(dataframe, file):
+	def _write_to_csv(dataframe, file, precision):
 		dataframe.to_csv(path_or_buf=file, encoding="ascii",
-						 float_format="%.4f")
+						 float_format=precision)
 
 	@staticmethod
 	def read_dataset(filename):
@@ -29,7 +29,7 @@ class IOHelper():
 	@staticmethod
 	def store_analysis(dataframe, filename):
 		csv_file = IOHelper.analysis_path+filename+".csv"
-		IOHelper._write_to_csv(dataframe, csv_file)
+		IOHelper._write_to_csv(dataframe, csv_file, precision=None)
 
 		png_file = IOHelper.analysis_path+filename+".png"
 		plt.savefig(png_file)
@@ -40,11 +40,11 @@ class IOHelper():
 		print "Storing submission"
 
 		file = IOHelper.submissions_path+filename+".csv"
-		IOHelper._write_to_csv(dataframe, file)
+		IOHelper._write_to_csv(dataframe, file, precision="%.4f")
 
 	@staticmethod
 	def store_results(dataframe, filename):
 		print "Storing results"
 
 		file = IOHelper.results_path+filename+".csv"
-		IOHelper._write_to_csv(dataframe, file)
+		IOHelper._write_to_csv(dataframe, file, precision=None)

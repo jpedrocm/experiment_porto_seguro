@@ -175,5 +175,6 @@ class DataHelper():
 			#add extra columns of best_cols
 			#return dataframe.drop(columns=DataHelper.best_cols,
 			#					  inplace=inplace)
+			#reindex columns in dataframe
 
 		print "Columns: " + str(len(dataframe.columns))
