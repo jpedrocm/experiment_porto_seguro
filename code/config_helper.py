@@ -13,6 +13,7 @@ class ConfigHelper():
 	nb_executions = 5
 	use_predefined_cols = False
 	metrics_file = "rf_min_samples"
+	analysis_dataset = "train"
 
 	@staticmethod
 	def k_fold_cv(labels):

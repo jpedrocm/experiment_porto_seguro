@@ -27,11 +27,13 @@ class IOHelper():
 		return dataframe
 
 	@staticmethod
-	def store_analysis(dataframe, filename):
-		csv_file = IOHelper.analysis_path+filename+".csv"
+	def store_analysis(dataframe, filename, suffix):
+		basename = IOHelper.analysis_path+filename+"_"+suffix
+
+		csv_file = basename+".csv"
 		IOHelper._write_to_csv(dataframe, csv_file, precision=None)
 
-		png_file = IOHelper.analysis_path+filename+".png"
+		png_file = basename+".png"
 		plt.savefig(png_file)
 		plt.close()
 
