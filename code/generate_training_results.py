@@ -46,12 +46,12 @@ if __name__ == "__main__":
 			DataHelper.fill_missing_data(train_X, is_train=True)
 			train_X = DataHelper.split_categorical_cols(train_X, is_train=True)
 			DataHelper.scale_continuous_cols(train_X, is_train=True)
-			DataHelper.select_best_features(train_X, inplace=True, is_train=True)
+			DataHelper.select_best_features(train_X, None, is_train=True)
 
 			DataHelper.fill_missing_data(val_X, is_train=False)
 			val_X = DataHelper.split_categorical_cols(val_X, is_train=False)
 			DataHelper.scale_continuous_cols(train_X, is_train=False)
-			DataHelper.select_best_features(val_X, inplace=True, is_train=False)
+			DataHelper.select_best_features(val_X, train_X, is_train=False)
 
 			MetricsHelper.store_gold(val_y)
 

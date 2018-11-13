@@ -73,6 +73,11 @@ class DataHelper():
 				df[col].fillna(value=DataHelper.fill_vals[col], inplace=True)
 
 	@staticmethod
+	def _get_different_cols(cols_big, cols_short):
+		short_set = set(cols_short)
+		return [col for col in cols_big if col not in short_set]	
+
+	@staticmethod
 	def extract_feature_labels(dataframe):
 		print "Extracting features and labels"
 
@@ -177,19 +182,26 @@ class DataHelper():
 						dataframe[DataHelper.continuous_cols].values)
 
 	@staticmethod
-	def select_best_features(dataframe, inplace, is_train):
+	def select_best_features(main_dataframe, train_dataframe, is_train):
 		print "Selecting best features"
 
 		if is_train==True:
 			#select best cols
-			#assigned best cols to static variable
-			pass
+			DataHelper.best_cols = main_dataframe.columns.tolist()
 		else:
-			pass
-			#drop all columns not in best_cols
-			#add extra columns of best_cols
-			#return dataframe.drop(columns=DataHelper.best_cols,
-			#					  inplace=inplace)
-			#reindex columns in dataframe
+			test_cols = main_dataframe.columns.tolist()
+			extra_test_cols = DataHelper._get_different_cols(
+													test_cols, 
+													DataHelper.best_cols)
+			DataHelper._remove_cols(main_dataframe, True, extra_test_cols)
 
-		print "Columns: " + str(len(dataframe.columns))
+			test_cols = main_dataframe.columns.tolist()
+			unnecessary_train_cols = DataHelper._get_different_cols(
+													DataHelper.best_cols,
+													test_cols)
+			DataHelper._remove_cols(train_dataframe, True, unnecessary_train_cols)
+
+			if main_dataframe.columns.tolist()!=train_dataframe.columns.tolist():
+				raise IndexError("Erro de ordem")
+
+		print "Columns: " + str(len(main_dataframe.columns))

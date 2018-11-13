@@ -27,7 +27,7 @@ if __name__ == "__main__":
 	DataHelper.fill_missing_data(train_X, is_train=True)
 	train_X = DataHelper.split_categorical_cols(train_X, is_train=True)
 	DataHelper.scale_continuous_cols(train_X, is_train=True)
-	DataHelper.select_best_features(train_X, inplace=True, is_train=True)
+	DataHelper.select_best_features(train_X, is_train=True)
 
 	test_X = IOHelper.read_dataset("test")
 
@@ -39,7 +39,7 @@ if __name__ == "__main__":
 	DataHelper.fill_missing_data(test_X, is_train=False)
 	test_X = DataHelper.split_categorical_cols(test_X, is_train=False)
 	DataHelper.scale_continuous_cols(test_X, is_train=False)
-	DataHelper.select_best_features(test_X, inplace=True, is_train=False)
+	DataHelper.select_best_features(test_X, is_train=False)
 
 	for name, model in ConfigHelper.get_submission_models():
 
