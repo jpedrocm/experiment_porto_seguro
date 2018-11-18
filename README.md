@@ -59,7 +59,7 @@ python generate_test_submission.py
     |   ├── data_helper.py
     |   ├── io_helper.py
     |   ├── metrics_helper.py
-    |   ├── statistics_helper.py
+    |   └── statistics_helper.py
     ├── data                               # Dataset files
     ├── results                            # Training results
     ├── submissions                        # Test submission files
