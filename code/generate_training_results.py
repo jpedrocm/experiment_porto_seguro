@@ -58,7 +58,6 @@ if __name__ == "__main__":
 			DataHelper.select_best_features(val_X, train_X, None,
 											ConfigHelper.max_nb_features,
 											is_train=False)
-			DataHelper.reset_scaler()
 
 			MetricsHelper.store_gold(val_y)
 
