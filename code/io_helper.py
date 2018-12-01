@@ -6,10 +6,12 @@ import matplotlib.pyplot as plt
 
 
 class IOHelper():
+	
 	datasets_path = "data/"
 	submissions_path = "submissions/"
 	analysis_path = "analysis/"
 	results_path = "results/"
+
 
 	@staticmethod
 	def _write_to_csv(dataframe, file, precision):
