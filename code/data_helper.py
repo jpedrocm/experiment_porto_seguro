@@ -5,21 +5,30 @@ from copy import deepcopy
 from pandas import get_dummies
 from sklearn.preprocessing import StandardScaler
 from sklearn.feature_selection import SelectKBest, f_classif
+from imblearn.over_sampling import RandomOverSampler
 
 
 
 class DataHelper():
+
 	small_var_cols = []
-	high_corr_cols = []
 	high_nan_rate_cols = []
+
 	categorical_cols = ["ps_reg_02", "ps_reg_01", "ps_ind_15", "ps_ind_14",
 						"ps_ind_05_cat", "ps_ind_03", "ps_ind_02_cat", 
-						"ps_ind_01"]
-	continuous_cols = ["ps_reg_03"]
-	mean_cols = []
+						"ps_ind_01", "ps_car_10_cat"]
+
+	continuous_cols = ["ps_reg_03", "ps_calc_01", "ps_calc_02", "ps_calc_03",
+					  "ps_car_01_cat", "ps_car_05_cat", "ps_car_02_cat",
+					  "ps_car_03_cat", "ps_car_09_cat", "ps_car_12",
+					  "ps_car_13", "ps_car_14", "ps_car_15"]
+
 	mode_cols = ["ps_ind_05_cat", "ps_ind_04_cat", "ps_ind_02_cat", 
-				 "ps_reg_03"]
-	median_cols = []
+				"ps_car_01_cat", "ps_car_02_cat", "ps_car_03_cat",
+				"ps_car_05_cat", "ps_car_12"]
+
+	median_cols = ["ps_car_09_cat", "ps_car_14", "ps_reg_03"]
+
 	best_cols = []
 
 	fill_vals = {}
@@ -28,6 +37,7 @@ class DataHelper():
 	min_full_rate_row = 0.8
 	max_nan_rate_col = 0.9
 	small_var_rate = 0.05
+	balance_ratio = 0.2
 
 	continuous_scaler = StandardScaler()
 
@@ -44,15 +54,6 @@ class DataHelper():
 	def _select_high_nan_rate_cols(df):
 		new_df = df.loc[:, df.count() < len(df)*DataHelper.max_nan_rate_col]
 		return new_df.columns.tolist()
-
-	@staticmethod
-	def _fill_with_mean(df, is_train):
-		for col in DataHelper.mean_cols:
-			if col in df.columns:
-				if is_train==True:
-					value = df[col].mean()
-					DataHelper.fill_vals[col] = value
-				df[col].fillna(value=DataHelper.fill_vals[col], inplace=True)
 
 	@staticmethod
 	def _fill_with_mode(df, is_train):
@@ -144,11 +145,10 @@ class DataHelper():
 
 	@staticmethod
 	def fill_missing_data(dataframe, is_train):
-		print "Filling missing data with mean, mode and median"
+		print "Filling missing data with mode or median"
 
-		#DataHelper._fill_with_mean(dataframe, is_train)
 		DataHelper._fill_with_mode(dataframe, is_train)
-		#DataHelper._fill_with_median(dataframe, is_train)
+		DataHelper._fill_with_median(dataframe, is_train)
 		dataframe.fillna(0, inplace=True)
 
 	@staticmethod
@@ -212,3 +212,8 @@ class DataHelper():
 				raise IndexError("Erro de ordem")
 
 		print "Columns: " + str(len(main_dataframe.columns))
+
+	@staticmethod
+	def balance_minority_data(X, y):
+		sampler = RandomOverSampler(sampling_strategy=DataHelper.balance_ratio)
+		return sampler.fit_sample(X, y)
