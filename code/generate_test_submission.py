@@ -1,13 +1,15 @@
 ###############################################################################
 
+# Do not change this for reproducibility
 import random as rnd
 from numpy import random as rnp
 rnd.seed(2789)
 rnp.seed(3056)
+########################################
 
 from io_helper import IOHelper
 from data_helper import DataHelper
-from  config_helper import ConfigHelper
+from config_helper import ConfigHelper
 from metrics_helper import MetricsHelper
 
 
@@ -27,19 +29,23 @@ if __name__ == "__main__":
 	DataHelper.fill_missing_data(train_X, is_train=True)
 	train_X = DataHelper.split_categorical_cols(train_X, is_train=True)
 	DataHelper.scale_continuous_cols(train_X, is_train=True)
-	DataHelper.select_best_features(train_X, is_train=True)
+	train_X = DataHelper.select_best_features(train_X, None, train_y,
+										ConfigHelper.max_nb_features, 
+										is_train=True)
 
 	test_X = IOHelper.read_dataset("test")
 
 	DataHelper.add_nan_indication_cols(test_X)
 	DataHelper.remove_high_nan_rate_cols(test_X, True)
-	DataHelper.remove_high_correlation_cols(test_X, True)
 	DataHelper.remove_small_variance_cols(test_X, True)
 
 	DataHelper.fill_missing_data(test_X, is_train=False)
 	test_X = DataHelper.split_categorical_cols(test_X, is_train=False)
 	DataHelper.scale_continuous_cols(test_X, is_train=False)
-	DataHelper.select_best_features(test_X, is_train=False)
+	DataHelper.select_best_features(test_X, train_X, None,
+									ConfigHelper.max_nb_features, 
+									is_train=False)
+	DataHelper.reset_scaler()
 
 	for name, model in ConfigHelper.get_submission_models():
 
