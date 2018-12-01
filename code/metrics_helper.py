@@ -43,7 +43,7 @@ class MetricsHelper():
 
 	@staticmethod
 	def store_gold(gold):
-		MetricsHelper.gold.extend(gold.values)
+		MetricsHelper.gold.extend(gold)
 
 	@staticmethod
 	def store_probs(prob, model):
