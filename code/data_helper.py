@@ -43,6 +43,7 @@ class DataHelper():
 
 	@staticmethod
 	def _remove_cols(df, inplace, cols):
+		cols = [col for col in cols if col in df.columns]
 		return df.drop(columns=cols, inplace=inplace)
 
 	@staticmethod
