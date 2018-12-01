@@ -1,15 +1,17 @@
 ###############################################################################
 
+# Do not change this for reproducibility
 import random as rnd
 from numpy import random as rnp
 rnd.seed(2789)
 rnp.seed(3056)
+########################################
 
 import time
 
 from io_helper import IOHelper
 from data_helper import DataHelper
-from  config_helper import ConfigHelper
+from config_helper import ConfigHelper
 from metrics_helper import MetricsHelper
 
 
@@ -46,12 +48,17 @@ if __name__ == "__main__":
 			DataHelper.fill_missing_data(train_X, is_train=True)
 			train_X = DataHelper.split_categorical_cols(train_X, is_train=True)
 			DataHelper.scale_continuous_cols(train_X, is_train=True)
-			DataHelper.select_best_features(train_X, None, is_train=True)
+			train_X = DataHelper.select_best_features(train_X, None, train_y,
+												ConfigHelper.max_nb_features, 
+												is_train=True)
 
 			DataHelper.fill_missing_data(val_X, is_train=False)
 			val_X = DataHelper.split_categorical_cols(val_X, is_train=False)
-			DataHelper.scale_continuous_cols(train_X, is_train=False)
-			DataHelper.select_best_features(val_X, train_X, is_train=False)
+			DataHelper.scale_continuous_cols(val_X, is_train=False)
+			DataHelper.select_best_features(val_X, train_X, None,
+											ConfigHelper.max_nb_features,
+											is_train=False)
+			DataHelper.reset_scaler()
 
 			MetricsHelper.store_gold(val_y)
 
