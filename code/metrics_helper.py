@@ -1,6 +1,5 @@
 ###############################################################################
 
-from sklearn.metrics import f1_score
 import numpy as np
 
 from pandas import DataFrame
@@ -8,9 +7,11 @@ from pandas import DataFrame
 
 
 class MetricsHelper():
+
 	probs = {}
 	gold = []
-	metrics = DataFrame(columns=["model", "gini", "f1_macro"])
+	metrics = DataFrame(columns=["model", "gini"])
+	
 
 	@staticmethod
 	def _gini(gold, pred, cmpcol=0, sortcol=1):  
@@ -32,9 +33,8 @@ class MetricsHelper():
 
 		gini_score = MetricsHelper._gini(gold, pos_prob)/ \
 						MetricsHelper._gini(gold, gold)
-		f1_macro = f1_score(gold, pred, average="macro")
 
-		return [model, gini_score, f1_macro]
+		return [model, gini_score]
 
 	@staticmethod
 	def reset_metrics():
