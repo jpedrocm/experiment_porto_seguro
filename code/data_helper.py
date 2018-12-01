@@ -3,7 +3,8 @@
 from copy import deepcopy
 
 from pandas import get_dummies
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import StandardScaler
+from sklearn.feature_selection import SelectKBest, f_classif
 
 
 
@@ -28,11 +29,10 @@ class DataHelper():
 	max_nan_rate_col = 0.9
 	small_var_rate = 0.05
 
-	continuous_scaler = MinMaxScaler()
+	continuous_scaler = StandardScaler()
 
 	@staticmethod
 	def _remove_cols(df, inplace, cols):
-		print cols
 		return df.drop(columns=cols, inplace=inplace)
 
 	@staticmethod
@@ -164,7 +164,7 @@ class DataHelper():
 
 	@staticmethod
 	def reset_scaler():
-		DataHelper.continuous_scaler = MinMaxScaler()
+		DataHelper.continuous_scaler = StandardScaler()
 
 	@staticmethod
 	def scale_continuous_cols(dataframe, is_train):
@@ -182,12 +182,19 @@ class DataHelper():
 						dataframe[DataHelper.continuous_cols].values)
 
 	@staticmethod
-	def select_best_features(main_dataframe, train_dataframe, is_train):
+	def select_best_features(main_dataframe, train_dataframe, labels,
+							 k, is_train):
 		print "Selecting best features"
 
 		if is_train==True:
-			#select best cols
-			DataHelper.best_cols = main_dataframe.columns.tolist()
+			selector = SelectKBest(f_classif, k=int(k))
+			selector.fit(main_dataframe.values, labels.values)
+			selected_mask = selector.get_support()
+			selected_idxs = [i for i in range(len(selected_mask)) \
+							 if selected_mask[i]==True]
+			selected_cols = list(main_dataframe.columns[selected_idxs])
+			DataHelper.best_cols = selected_cols
+			return main_dataframe[selected_cols]
 		else:
 			test_cols = main_dataframe.columns.tolist()
 			extra_test_cols = DataHelper._get_different_cols(
