@@ -9,11 +9,16 @@ from sklearn.ensemble import GradientBoostingClassifier as GB
 
 
 class ConfigHelper():
+	# Do not change
 	k_folds = 2
 	nb_executions = 5
+	max_nb_features = 50
 	use_predefined_cols = False
-	metrics_file = "rf_min_samples"
 	analysis_dataset = "train"
+	###########################
+
+	metrics_file = "rf_min_samples" #Change this when trying new experiments
+
 
 	@staticmethod
 	def k_fold_cv(labels):
@@ -34,23 +39,17 @@ class ConfigHelper():
 				#			   kernel="poly", max_iter=-1, gamma="auto")),
 				#("SVM_SIGMOID", SVM(probability=True, tol=0.001, C=1, 
 				#			   kernel="sigmoid", max_iter=-1, gamma="auto")),
-				#("MLP_RELU", MLP(hidden_layer_sizes=(100, ), alpha=0.0001,
-				#	activation="relu", learning_rate_init=0.001,
-				#	tol=0.0001, max_iter=200)),
+				("MLP_RELU", MLP(hidden_layer_sizes=(100, ), alpha=0.0001,
+					activation="relu", learning_rate_init=0.001,
+					tol=0.0001, max_iter=200)),
 				#("MLP_TANH", MLP(hidden_layer_sizes=(100, ), alpha=0.0001,
 				#	activation="tanh", learning_rate_init=0.001,
 				#	tol=0.0001, max_iter=200)),
 				#("MLP_LOG", MLP(hidden_layer_sizes=(100, ), alpha=0.0001,
 				#	activation="logistic", learning_rate_init=0.001,
 				#	tol=0.0001, max_iter=200)),
-				("RF_6", RF(n_estimators=320, max_depth=9, min_samples_split=6,
-				   bootstrap=False, n_jobs=-1)),
-				("RF_4", RF(n_estimators=320, max_depth=9, min_samples_split=4,
-				   bootstrap=False, n_jobs=-1)),
-				("RF_8", RF(n_estimators=320, max_depth=9, min_samples_split=8,
-				   bootstrap=False, n_jobs=-1)),
-				("RF_10", RF(n_estimators=320, max_depth=9, min_samples_split=10,
-				   bootstrap=False, n_jobs=-1)),
+				#("RF_10", RF(n_estimators=200, max_depth=9, min_samples_split=10,
+				#   bootstrap=False, n_jobs=-1)),
 				#("GB_10", GB(n_estimators=10, learning_rate=0.1, subsample=1.0,
 				#   max_depth=3, min_samples_split=2, tol=0.0001)),
 				#("GB_20", GB(n_estimators=20, learning_rate=0.1, subsample=1.0,	
