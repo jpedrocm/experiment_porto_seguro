@@ -15,10 +15,11 @@ The goal of this project is to explore the [Porto Seguro's Safe Driver Predictio
 ### Requirements
 
 * [Python](https://www.python.org/) >= 2.7.15
-* [NumPy](http://www.numpy.org/) >= 1.15.2
+* [NumPy](http://www.numpy.org/) >= 1.15.4
 * [matplotlib](https://matplotlib.org/) >= 2.2.3
 * [pandas](https://pandas.pydata.org/) >= 0.23.4
-* [scikit-learn](http://scikit-learn.org/stable/) >= 0.20.0
+* [scikit-learn](http://scikit-learn.org/stable/) >= 0.20.1
+* [imbalanced-learn](https://imbalanced-learn.org/en/stable/index.html) >= 0.4.3
 
 
 ### Installing
@@ -40,7 +41,7 @@ python generate_analysis.py
 ```
 python generate_training_results.py
 ```
-* Edit the get_submission_models in the ConfigHelper class according to the current sample
+* Edit the get_submission_models function in the ConfigHelper class according to the current sample
 * Generate all models submission files
 ```
 python generate_test_submission.py
