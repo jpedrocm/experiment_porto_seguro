@@ -17,7 +17,7 @@ class ConfigHelper():
 	analysis_dataset = "train"
 	###########################
 
-	metrics_file = "rf_min_samples" #Change this when trying new experiments
+	metrics_file = "cv_metrics" #Change this when trying new experiments
 
 
 	@staticmethod
@@ -27,33 +27,18 @@ class ConfigHelper():
 
 	@staticmethod
 	def get_submission_models():
-		return [("RF_10", RF(n_estimators=320, max_depth=9, min_samples_split=10,
-				   bootstrap=False, n_jobs=-1)),
+		return [("GB_Final", GB(n_estimators=250, learning_rate=0.1, subsample=1.0,
+				   max_depth=3, min_samples_split=20)),
 			   ]
 
 	@staticmethod
 	def get_training_models():
-		return [#("SVM_RBF", SVM(probability=True, tol=0.001, C=1, 
-				#			   kernel="rbf", max_iter=-1, gamma="auto")),
-				#("SVM_POLY", SVM(probability=True, tol=0.001, C=1, 
-				#			   kernel="poly", max_iter=-1, gamma="auto")),
-				#("SVM_SIGMOID", SVM(probability=True, tol=0.001, C=1, 
-				#			   kernel="sigmoid", max_iter=-1, gamma="auto")),
+		return [
 				("MLP_RELU", MLP(hidden_layer_sizes=(100, ), alpha=0.0001,
 					activation="relu", learning_rate_init=0.001,
 					tol=0.0001, max_iter=200)),
-				#("MLP_TANH", MLP(hidden_layer_sizes=(100, ), alpha=0.0001,
-				#	activation="tanh", learning_rate_init=0.001,
-				#	tol=0.0001, max_iter=200)),
-				#("MLP_LOG", MLP(hidden_layer_sizes=(100, ), alpha=0.0001,
-				#	activation="logistic", learning_rate_init=0.001,
-				#	tol=0.0001, max_iter=200)),
-				#("RF_10", RF(n_estimators=200, max_depth=9, min_samples_split=10,
-				#   bootstrap=False, n_jobs=-1)),
-				#("GB_10", GB(n_estimators=10, learning_rate=0.1, subsample=1.0,
-				#   max_depth=3, min_samples_split=2, tol=0.0001)),
-				#("GB_20", GB(n_estimators=20, learning_rate=0.1, subsample=1.0,	
-				#   max_depth=3, min_samples_split=2, tol=0.0001)),
-				#("GB_40", GB(n_estimators=40, learning_rate=0.1, subsample=1.0,
-				#   max_depth=3, min_samples_split=2, tol=0.0001))
+				("GB_50", GB(n_estimators=250, learning_rate=0.1, subsample=1.0,
+				   max_depth=3, min_samples_split=20)),
+				 ("RF_FINAL", RF(n_estimators=250, max_depth=None, min_samples_split=2,
+				   bootstrap=True, n_jobs=-1)),
 				]
